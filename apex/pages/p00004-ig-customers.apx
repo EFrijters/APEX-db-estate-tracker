@@ -1,0 +1,395 @@
+page 4 (
+    name: IG_Customers
+    alias: IG-CUSTOMERS
+    title: IG_Customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region ig-customers (
+        name: IG_Customers
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: CUSTOMERS
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 6401845372634201
+        }
+
+        savedReport primary (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @CONTACT_EMAIL
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @COUNTRY
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @ROW_VERSION
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @CREATED
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @CREATED_BY
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED_BY
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CONTACT_EMAIL (
+            type: textField
+            heading {
+                heading: Contact Email
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: CONTACT_EMAIL
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column COUNTRY (
+            type: textField
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                maxLength: 2
+            }
+            source {
+                databaseColumn: COUNTRY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column CREATED (
+            type: displayOnly
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column CREATED_BY (
+            type: displayOnly
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                queryOnly: true
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                valueRequired: true
+                maxLength: 100
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ROW_VERSION (
+            type: hidden
+            heading {
+                heading: Row Version
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: ROW_VERSION
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column UPDATED (
+            type: displayOnly
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column UPDATED_BY (
+            type: displayOnly
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: UPDATED_BY
+                dataType: varchar2
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    process ig-customers-save-interactive-grid-data (
+        name: IG_Customers - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @ig-customers
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 7000341651689603
+        }
+    )
+
+)
+

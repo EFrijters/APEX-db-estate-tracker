@@ -1,0 +1,845 @@
+page 5 (
+    name: Database patches
+    alias: DATABASE-PATCHES
+    title: Database patches
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region database-patches (
+        name: Database patches
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: DATABASES
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 9605149612919838
+        }
+
+        savedReport primary (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @SERVER_ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @DB_NAME
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @VERSION
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @EDITION
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @IS_CDB
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @GO_LIVE_DATE
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ROW_VERSION
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @CREATED
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @CREATED_BY
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED
+                layout {
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED_BY
+                layout {
+                    sequence: 12
+                }
+            )
+
+        )
+
+        column CREATED (
+            type: datePicker
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column CREATED_BY (
+            type: textField
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 120
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DB_NAME (
+            type: textField
+            heading {
+                heading: Db Name
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+                maxLength: 30
+            }
+            source {
+                databaseColumn: DB_NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column EDITION (
+            type: textField
+            heading {
+                heading: Edition
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                maxLength: 10
+            }
+            source {
+                databaseColumn: EDITION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column GO_LIVE_DATE (
+            type: datePicker
+            heading {
+                heading: Go Live Date
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: GO_LIVE_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                queryOnly: true
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column IS_CDB (
+            type: switch
+            heading {
+                heading: Is Cdb
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: IS_CDB
+                dataType: boolean
+            }
+            sessionState {
+                dataType: boolean
+            }
+        )
+
+        column ROW_VERSION (
+            type: numberField
+            heading {
+                heading: Row Version
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ROW_VERSION
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column SERVER_ID (
+            type: numberField
+            heading {
+                heading: Server Id
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SERVER_ID
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column UPDATED (
+            type: datePicker
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 130
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+        column UPDATED_BY (
+            type: textField
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 140
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            source {
+                databaseColumn: UPDATED_BY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column VERSION (
+            type: textField
+            heading {
+                heading: Version
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                maxLength: 20
+            }
+            source {
+                databaseColumn: VERSION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region patches (
+        name: Patches
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: PATCHES
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        masterDetail {
+            masterRegion: @database-patches
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 9620320373919927
+        }
+
+        savedReport primary (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @DATABASE_ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @PATCH_NAME
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @APPLIED_ON
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @APPLIED_BY
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @ROW_VERSION
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @CREATED
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @CREATED_BY
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @UPDATED_BY
+                layout {
+                    sequence: 10
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column APPLIED_BY (
+            type: textField
+            heading {
+                heading: Applied By
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                maxLength: 50
+            }
+            source {
+                databaseColumn: APPLIED_BY
+                dataType: varchar2
+            }
+            default {
+                type: expression
+                plsqlExpression: :APP_USER
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column APPLIED_ON (
+            type: datePicker
+            heading {
+                heading: Applied On
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: APPLIED_ON
+                dataType: date
+            }
+            default {
+                type: expression
+                plsqlExpression: SYSDATE
+            }
+        )
+
+        column CREATED (
+            type: displayOnly
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column CREATED_BY (
+            type: displayOnly
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DATABASE_ID (
+            type: hidden
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: DATABASE_ID
+                dataType: number
+            }
+            masterDetail {
+                masterColumn: @ID
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                queryOnly: true
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column PATCH_NAME (
+            type: textField
+            heading {
+                heading: Patch Name
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+                maxLength: 100
+            }
+            source {
+                databaseColumn: PATCH_NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ROW_VERSION (
+            type: hidden
+            heading {
+                heading: Row Version
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: ROW_VERSION
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column UPDATED (
+            type: displayOnly
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column UPDATED_BY (
+            type: displayOnly
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: UPDATED_BY
+                dataType: varchar2
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process patches-save-interactive-grid-data (
+        name: Patches - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @patches
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 9633054392919938
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

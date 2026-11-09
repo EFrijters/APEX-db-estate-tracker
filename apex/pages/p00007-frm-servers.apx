@@ -1,0 +1,463 @@
+page 7 (
+    name: frm_Servers
+    alias: FRM-SERVERS
+    title: frm_Servers
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region frm-servers (
+        name: frm_Servers
+        type: form
+        source {
+            location: localDatabase
+            tableName: SERVERS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P7_CREATED (
+        type: datePicker
+        label {
+            label: Created
+            alignment: right
+        }
+        layout {
+            sequence: 70
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @frm-servers
+            column: CREATED
+            dataType: date
+        }
+    )
+
+    pageItem P7_CREATED_BY (
+        type: textField
+        label {
+            label: Created By
+            alignment: right
+        }
+        layout {
+            sequence: 80
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @frm-servers
+            column: CREATED_BY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P7_CUSTOMER_ID (
+        type: selectList
+        label {
+            label: Customer Id
+            alignment: right
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers-name
+        }
+        layout {
+            sequence: 20
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @frm-servers
+            column: CUSTOMER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P7_ENVIRONMENT (
+        type: textField
+        label {
+            label: Environment
+            alignment: right
+        }
+        layout {
+            sequence: 50
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            formRegion: @frm-servers
+            column: ENVIRONMENT
+            dataType: varchar2
+        }
+    )
+
+    pageItem P7_HOSTNAME (
+        type: textField
+        label {
+            label: Hostname
+            alignment: right
+        }
+        layout {
+            sequence: 30
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @frm-servers
+            column: HOSTNAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P7_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @frm-servers
+            slot: regionBody
+        }
+        source {
+            formRegion: @frm-servers
+            column: ID
+            dataType: number
+            queryOnly: true
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_OS (
+        type: textField
+        label {
+            label: Os
+            alignment: right
+        }
+        layout {
+            sequence: 40
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 50
+        }
+        source {
+            formRegion: @frm-servers
+            column: OS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P7_ROW_VERSION (
+        type: numberField
+        label {
+            label: Row Version
+            alignment: right
+        }
+        layout {
+            sequence: 60
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @frm-servers
+            column: ROW_VERSION
+            dataType: number
+        }
+    )
+
+    pageItem P7_UPDATED (
+        type: datePicker
+        label {
+            label: Updated
+            alignment: right
+        }
+        layout {
+            sequence: 90
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @frm-servers
+            column: UPDATED
+            dataType: date
+        }
+    )
+
+    pageItem P7_UPDATED_BY (
+        type: textField
+        label {
+            label: Updated By
+            alignment: right
+        }
+        layout {
+            sequence: 100
+            region: @frm-servers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @frm-servers
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: triggerAction
+        }
+
+        triggerAction native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P7_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P7_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P7_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6611637625640650
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-frm-servers (
+        name: Initialize form frm_Servers
+        type: formInitialization
+        formRegion: @frm-servers
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6610868724640649
+        }
+    )
+
+    process process-form-frm-servers (
+        name: Process form frm_Servers
+        type: formAutoRowProcessing
+        formRegion: @frm-servers
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 6611203502640650
+        }
+    )
+
+)
+

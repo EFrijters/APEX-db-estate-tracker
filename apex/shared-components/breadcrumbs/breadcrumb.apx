@@ -1,0 +1,70 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry database-patches (
+        name: Database patches
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry ig-customers (
+        name: IG_Customers
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry ir-servers (
+        name: IR_Servers
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry table-databases (
+        name: Table_Databases
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

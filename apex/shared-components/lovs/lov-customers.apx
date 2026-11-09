@@ -1,0 +1,12 @@
+lov lov-customers (
+    name: LOV_CUSTOMERS
+    source {
+        type: sqlQuery
+        sqlQuery: SELECT name d, id r FROM customers ORDER BY name
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+

@@ -1,0 +1,12 @@
+lov lov-servers (
+    name: LOV_SERVERS
+    source {
+        type: sqlQuery
+        sqlQuery: SELECT hostname AS d, id AS r FROM servers ORDER BY hostname
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+

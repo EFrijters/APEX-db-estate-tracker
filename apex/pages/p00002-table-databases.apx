@@ -1,0 +1,418 @@
+page 2 (
+    name: Table_Databases
+    alias: TABLE-DATABASES
+    title: Table_Databases
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region table-databases (
+        name: Table_Databases
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT a.ID,
+                    b.hostname,
+                    a.SERVER_ID,
+                    a.DB_NAME,
+                    a.VERSION,
+                    a.EDITION,
+                    a.IS_CDB,
+                    a.GO_LIVE_DATE,
+                    a.ROW_VERSION,
+                    a.CREATED,
+                    a.CREATED_BY,
+                    a.UPDATED,
+                    a.UPDATED_BY
+                  FROM databases a,
+                    servers b
+                  WHERE a.server_id=b.id 
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 3
+                items: {
+                    P3_ID: \#ID#\
+                }
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 6214590211627257
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 73
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 83
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DB_NAME (
+            type: plainText
+            heading {
+                heading: Db Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column EDITION (
+            type: plainText
+            heading {
+                heading: Edition
+            }
+            layout {
+                sequence: 33
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column GO_LIVE_DATE (
+            type: plainText
+            heading {
+                heading: Go Live Date
+            }
+            layout {
+                sequence: 53
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column HOSTNAME (
+            type: plainText
+            heading {
+                heading: Server
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IS_CDB (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Is Cdb
+            }
+            lov {
+                lov: @boolean
+            }
+            layout {
+                sequence: 43
+            }
+            source {
+                dataType: boolean
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ROW_VERSION (
+            type: plainText
+            heading {
+                heading: Row Version
+                alignment: end
+            }
+            layout {
+                sequence: 63
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column SERVER_ID (
+            type: plainText
+            heading {
+                heading: Server Id
+                alignment: end
+            }
+            layout {
+                sequence: 113
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 93
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 103
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column VERSION (
+            type: plainText
+            heading {
+                heading: Version
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED (
+                sequence: 7
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 8
+            )
+
+            displayColumn DB_NAME (
+                sequence: 1
+            )
+
+            displayColumn EDITION (
+                sequence: 4
+            )
+
+            displayColumn GO_LIVE_DATE (
+                sequence: 6
+            )
+
+            displayColumn HOSTNAME (
+                sequence: 2
+            )
+
+            displayColumn IS_CDB (
+                sequence: 5
+            )
+
+            displayColumn UPDATED (
+                sequence: 9
+            )
+
+            displayColumn UPDATED_BY (
+                sequence: 10
+            )
+
+            displayColumn VERSION (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 10
+            region: @table-databases
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                clearCache: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @table-databases
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @table-databases
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

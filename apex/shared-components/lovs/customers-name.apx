@@ -1,0 +1,12 @@
+lov customers-name (
+    name: CUSTOMERS.NAME
+    source {
+        tableName: CUSTOMERS
+    }
+    columnMapping {
+        return: ID
+        display: NAME
+        defaultSort: NAME
+    }
+)
+
