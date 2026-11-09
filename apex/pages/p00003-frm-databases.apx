@@ -519,7 +519,7 @@ page 3 (
     )
 
     process long-version-change (
-        name: Long version change
+        name: Log version change
         type: executeCode
         source {
             plsqlCode:
