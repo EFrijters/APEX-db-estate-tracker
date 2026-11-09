@@ -518,7 +518,7 @@ page 3 (
         }
     )
 
-    process long-version-change (
+    process log-version-change (
         name: Log version change
         type: executeCode
         source {
