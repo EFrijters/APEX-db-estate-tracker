@@ -112,11 +112,11 @@ page 7 (
         type: selectList
         label {
             label: Customer Id
-            alignment: right
+            alignment: left
         }
         lov {
             type: sharedComponent
-            lov: @customers-name
+            lov: @lov-customers
         }
         layout {
             sequence: 20
@@ -163,10 +163,14 @@ page 7 (
     )
 
     pageItem P7_HOSTNAME (
-        type: textField
+        type: selectList
         label {
             label: Hostname
-            alignment: right
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @lov-servers
         }
         layout {
             sequence: 30
@@ -177,11 +181,10 @@ page 7 (
         appearance {
             template: @/required-floating
             templateOptions: #DEFAULT#
-            width: 32
+            height: 1
         }
         validation {
             valueRequired: true
-            maxLength: 100
         }
         source {
             formRegion: @frm-servers

@@ -358,7 +358,8 @@ page 5 (
                 dataType: number
             }
             columnFilter {
-                lovType: none
+                lovType: sharedComponent
+                namedLov: @lov-servers
             }
         )
 

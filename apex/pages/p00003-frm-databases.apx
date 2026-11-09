@@ -442,11 +442,59 @@ page 3 (
         }
     )
 
+    validation db-name-unique-per-server (
+        name: DB name unique per server
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                SELECT 1
+                  FROM databases
+                  WHERE db_name = UPPER(:P3_DB_NAME) AND    
+                    server_id = :P3_SERVER_ID AND
+                    id <> NVL(:P3_ID, -1)
+                ```
+        }
+        error {
+            errorMessage: Database &P3_DB_NAME. already exists on this server.
+            associatedItem: @P3_DB_NAME
+        }
+    )
+
+    validation go-live-not-in-future (
+        name: Go-live not in future
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: :P3_GO_LIVE_DATE IS NULL OR TRUNC(TO_DATE(:P3_GO_LIVE_DATE)) <= TRUNC(SYSDATE)
+        }
+        error {
+            errorMessage: Go-live date cannot be in the future.
+            associatedItem: @P3_GO_LIVE_DATE
+        }
+    )
+
+    computation p3-db-name (
+        itemName: P3_DB_NAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: UPPER(:P3_DB_NAME)
+        }
+    )
+
     process close-dialog (
         name: Close Dialog
         type: closeDialog
         execution {
-            sequence: 50
+            sequence: 40
         }
         advanced {
             executionMappingIdentifier: 6213374889627197
@@ -470,12 +518,45 @@ page 3 (
         }
     )
 
+    process long-version-change (
+        name: Long version change
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                DECLARE
+                  l_old_version databases.version%TYPE;
+                BEGIN
+                  IF :P3_ID IS NOT NULL THEN
+                    SELECT version INTO l_old_version
+                      FROM   databases
+                      WHERE  id = :P3_ID;
+                
+                    IF NVL(l_old_version, '#') <> NVL(:P3_VERSION, '#') THEN
+                      INSERT INTO patches (database_id, patch_name, applied_on, applied_by)
+                        VALUES (:P3_ID, 'Version change ' || l_old_version || ' -> ' || :P3_VERSION, SYSDATE, :APP_USER);
+                    END IF;
+                  END IF;
+                END;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 7000768925689607
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
     process process-form-frm-databases (
         name: Process form Frm_databases
         type: formAutoRowProcessing
         formRegion: @frm-databases
         execution {
-            sequence: 10
+            sequence: 20
         }
         advanced {
             executionMappingIdentifier: 6212942623627197
