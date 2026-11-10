@@ -59,7 +59,7 @@ page 3 (
             alignment: left
         }
         layout {
-            sequence: 90
+            sequence: 100
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -83,7 +83,7 @@ page 3 (
             alignment: left
         }
         layout {
-            sequence: 100
+            sequence: 110
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -100,14 +100,35 @@ page 3 (
         }
     )
 
+    pageItem P3_CUSTOMER_NAME (
+        type: displayOnly
+        label {
+            label: Customer
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @frm-databases
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+    )
+
     pageItem P3_DB_NAME (
         type: textField
         label {
             label: Db Name
-            alignment: right
+            alignment: left
         }
         layout {
-            sequence: 30
+            sequence: 40
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -129,13 +150,17 @@ page 3 (
     )
 
     pageItem P3_EDITION (
-        type: textField
+        type: selectList
         label {
             label: Edition
-            alignment: right
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Enterprise Edition;EE,Standard Edition 2;SE2,Free;FREE
         }
         layout {
-            sequence: 50
+            sequence: 60
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -143,10 +168,7 @@ page 3 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-            width: 32
-        }
-        validation {
-            maxLength: 10
+            height: 1
         }
         source {
             formRegion: @frm-databases
@@ -159,10 +181,10 @@ page 3 (
         type: datePicker
         label {
             label: Go Live Date
-            alignment: right
+            alignment: left
         }
         layout {
-            sequence: 70
+            sequence: 80
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -205,10 +227,10 @@ page 3 (
         type: switch
         label {
             label: Is Cdb
-            alignment: right
+            alignment: left
         }
         layout {
-            sequence: 60
+            sequence: 70
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -230,7 +252,7 @@ page 3 (
     pageItem P3_ROW_VERSION (
         type: hidden
         layout {
-            sequence: 80
+            sequence: 90
             region: @frm-databases
             slot: regionBody
         }
@@ -275,7 +297,7 @@ page 3 (
             alignment: left
         }
         layout {
-            sequence: 110
+            sequence: 120
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -299,7 +321,7 @@ page 3 (
             alignment: left
         }
         layout {
-            sequence: 120
+            sequence: 130
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -320,10 +342,10 @@ page 3 (
         type: textField
         label {
             label: Version
-            alignment: right
+            alignment: left
         }
         layout {
-            sequence: 40
+            sequence: 50
             region: @frm-databases
             slot: regionBody
             alignment: left
@@ -440,6 +462,122 @@ page 3 (
             type: itemIsNotNull
             item: P3_ID
         }
+    )
+
+    dynamicAction edition-change (
+        name: Edition change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P3_EDITION
+        }
+        clientSideCondition {
+            type: item=value
+            item: P3_EDITION
+            value: FREE
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P3_IS_CDB
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-set-value (
+            action: executeJsCode
+            settings {
+                jsCode: apex.item('P3_IS_CDB').setValue(true);
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P3_IS_CDB
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction show-customer (
+        name: Show customer
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P3_SERVER_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT c.name
+                      FROM servers s
+                      JOIN customers c ON c.id = s.customer_id
+                      WHERE s.id = :P3_SERVER_ID
+                    ```
+                itemsToSubmit: P3_SERVER_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P3_CUSTOMER_NAME
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction uppercase-db-name (
+        name: Uppercase DB name
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P3_DB_NAME
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var item  = apex.item('P3_DB_NAME');
+                    var value = item.getValue();
+                    
+                    if (value !== value.toUpperCase()) {
+                      item.setValue(value.toUpperCase(), null, true);
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
     )
 
     validation db-name-unique-per-server (
