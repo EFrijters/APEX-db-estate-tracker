@@ -39,6 +39,10 @@ app DB-ESTATE-TRACKER (
     authentication {
         scheme: @oracle-apex-accounts
     }
+    authorization {
+        scheme: @is-reader-or-dba
+        runOnBackgroundJob: false
+    }
     runtime {
         allowFeedback: true
     }

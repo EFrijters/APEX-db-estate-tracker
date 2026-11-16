@@ -13,6 +13,10 @@ page 3 (
     dialog {
         chained: false
     }
+    readOnly {
+        type: expression
+        plsqlExpression: NOT APEX_AUTHORIZATION.IS_AUTHORIZED('Is DBA')
+    }
 
     region buttons (
         name: Buttons
@@ -411,6 +415,9 @@ page 3 (
             type: itemIsNull
             item: P3_ID
         }
+        security {
+            authorizationScheme: @is-dba
+        }
     )
 
     button delete (
@@ -439,6 +446,9 @@ page 3 (
             type: itemIsNotNull
             item: P3_ID
         }
+        security {
+            authorizationScheme: @is-dba
+        }
     )
 
     button save (
@@ -461,6 +471,9 @@ page 3 (
         serverSideCondition {
             type: itemIsNotNull
             item: P3_ID
+        }
+        security {
+            authorizationScheme: @is-dba
         }
     )
 
@@ -490,17 +503,6 @@ page 3 (
             }
         )
 
-        action native-set-value (
-            action: executeJsCode
-            settings {
-                jsCode: apex.item('P3_IS_CDB').setValue(true);
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
         action native-show (
             action: show
             affectedElements {
@@ -510,6 +512,17 @@ page 3 (
             execution {
                 sequence: 10
                 fireWhenEventResultIs: false
+            }
+        )
+
+        action set-is-cdb-true (
+            action: executeJsCode
+            settings {
+                jsCode: apex.item('P3_IS_CDB').setValue(true);
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
             }
         )
 
@@ -641,6 +654,9 @@ page 3 (
             type: requestIsContainedInValue
             value: CREATE,SAVE,DELETE
         }
+        security {
+            authorizationScheme: @is-dba
+        }
     )
 
     process initialize-form-frm-databases (
@@ -687,6 +703,9 @@ page 3 (
         serverSideCondition {
             whenButtonPressed: @save
         }
+        security {
+            authorizationScheme: @is-dba
+        }
     )
 
     process process-form-frm-databases (
@@ -698,6 +717,9 @@ page 3 (
         }
         advanced {
             executionMappingIdentifier: 6212942623627197
+        }
+        security {
+            authorizationScheme: @is-dba
         }
     )
 

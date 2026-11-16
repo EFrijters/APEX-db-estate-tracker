@@ -387,6 +387,9 @@ page 2 (
             }
             warnOnUnsavedChanges: doNotCheck
         }
+        security {
+            authorizationScheme: @is-dba
+        }
     )
 
     dynamicAction edit-report-dialog-closed (

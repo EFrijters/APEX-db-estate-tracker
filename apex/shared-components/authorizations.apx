@@ -9,3 +9,34 @@ authorization administration-rights (
     }
 )
 
+authorization is-dba (
+    name: Is DBA
+    type: isInRoleOrGroup
+    settings {
+        names: DBA
+    }
+    error {
+        errorMessage: You need the DBA role for this action.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+
+authorization is-reader-or-dba (
+    name: Is reader or DBA
+    type: isInRoleOrGroup
+    settings {
+        names: [
+            READER
+            DBA
+        ]
+    }
+    error {
+        errorMessage: You need the READER or DBA role for this action.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

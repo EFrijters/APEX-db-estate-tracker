@@ -458,6 +458,10 @@ page 5 (
         masterDetail {
             masterRegion: @database-patches
         }
+        readOnly {
+            type: expression
+            plsqlExpression: NOT APEX_AUTHORIZATION.IS_AUTHORIZED('Is DBA')
+        }
         edit {
             enabled: true
             allowedOperations: [
@@ -839,6 +843,9 @@ page 5 (
         }
         serverSideCondition {
             whenButtonPressed: @save
+        }
+        security {
+            authorizationScheme: @is-dba
         }
     )
 

@@ -48,6 +48,10 @@ page 4 (
                 t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
             ]
         }
+        readOnly {
+            type: expression
+            plsqlExpression: NOT APEX_AUTHORIZATION.IS_AUTHORIZED('Is DBA')
+        }
         edit {
             enabled: true
             allowedOperations: [
@@ -388,6 +392,9 @@ page 4 (
         }
         advanced {
             executionMappingIdentifier: 7000341651689603
+        }
+        security {
+            authorizationScheme: @is-dba
         }
     )
 
